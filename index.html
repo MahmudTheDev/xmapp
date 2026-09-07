@@ -1,0 +1,2721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChronoExam Pro Max — Super Ultra Level Exam Pacer & Analytics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #090d16;
+      --bg-secondary: #0f172a;
+      --bg-card: rgba(15, 23, 42, 0.85);
+      --bg-card-hover: rgba(30, 41, 59, 0.75);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(99, 102, 241, 0.35);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.3);
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.25);
+      --warning: #f59e0b;
+      --warning-glow: rgba(245, 158, 11, 0.25);
+      --danger: #ef4444;
+      --danger-glow: rgba(239, 68, 68, 0.35);
+      --card-radius: 20px;
+      --font-main: 'Plus Jakarta Sans', 'Hind Siliguri', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-card: rgba(255, 255, 255, 0.95);
+      --bg-card-hover: rgba(241, 245, 249, 0.9);
+      --border-color: rgba(0, 0, 0, 0.08);
+      --border-accent: rgba(99, 102, 241, 0.3);
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --accent: #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-glow: rgba(79, 70, 229, 0.15);
+      --success: #059669;
+      --warning: #d97706;
+      --danger: #dc2626;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.14) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.1) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1.75rem;
+      backdrop-filter: blur(16px);
+      background: rgba(9, 13, 22, 0.8);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    [data-theme="light"] header {
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+
+    .brand-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .pro-badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+      color: #fff;
+      padding: 2px 7px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      -webkit-text-fill-color: initial;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .icon-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 0.45rem 0.75rem;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .icon-btn:hover {
+      color: var(--text-primary);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .icon-btn svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1120px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .view-section {
+      display: none;
+      animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .view-section.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #818cf8;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      max-width: 620px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    .setup-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      padding: 1.5rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+      transition: border-color 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: var(--border-accent);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(99, 102, 241, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .pill-group {
+      display: flex;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      gap: 4px;
+      margin-bottom: 1.25rem;
+    }
+
+    [data-theme="light"] .pill-group {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .pill-option {
+      flex: 1;
+      text-align: center;
+      padding: 0.65rem 0.8rem;
+      border-radius: 9px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .pill-option.active {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 2px 10px var(--accent-glow);
+    }
+
+    .presets-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .preset-chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 0.45rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .preset-chip:hover, .preset-chip.active {
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      border-color: var(--accent);
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .input-group {
+      flex: 1;
+    }
+
+    .input-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.45rem;
+    }
+
+    .custom-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 0.7rem 0.9rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    [data-theme="light"] .custom-input {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .custom-input:focus {
+      border-color: var(--accent);
+    }
+
+    /* Policy Radio Cards */
+    .policy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .policy-card {
+      border: 1.5px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 14px;
+      padding: 1.1rem;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .policy-card:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .policy-card.active {
+      border-color: var(--accent);
+      background: rgba(99, 102, 241, 0.09);
+      box-shadow: 0 0 22px rgba(99, 102, 241, 0.15);
+    }
+
+    .policy-tag {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 0.45rem;
+    }
+
+    .tag-overload {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+    }
+
+    .tag-strict {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+    }
+
+    .policy-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .policy-desc {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
+    .start-btn-wrap {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .btn-super-pro {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      color: #ffffff;
+      border: none;
+      padding: 1.15rem 3.5rem;
+      font-size: 1.2rem;
+      font-weight: 800;
+      border-radius: 999px;
+      cursor: pointer;
+      letter-spacing: -0.01em;
+      box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn-super-pro:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 16px 42px rgba(99, 102, 241, 0.55);
+    }
+
+    .btn-super-pro:active {
+      transform: translateY(-1px) scale(0.99);
+    }
+
+    /* --- ACTIVE EXAM VIEW --- */
+    .exam-status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 0.9rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .q-indicator {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    .q-number-big {
+      font-size: 1.6rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: var(--accent);
+    }
+
+    .q-total-small {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .exam-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .status-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .badge-mcq { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .badge-cq { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .badge-overload { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-strict { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+    .total-elapsed {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* THE CLOCK COMPONENT */
+    .clock-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem 0;
+    }
+
+    .interactive-clock-card {
+      position: relative;
+      width: 350px;
+      height: 350px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      outline: none;
+      transition: transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: radial-gradient(circle at center, rgba(30, 41, 59, 0.4) 0%, transparent 70%);
+    }
+
+    .interactive-clock-card:hover {
+      transform: scale(1.03);
+    }
+
+    .interactive-clock-card:active {
+      transform: scale(0.97);
+    }
+
+    .clock-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+      filter: drop-shadow(0 10px 28px rgba(0, 0, 0, 0.4));
+    }
+
+    .clock-track {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.06);
+      stroke-width: 15;
+    }
+
+    [data-theme="light"] .clock-track {
+      stroke: rgba(0, 0, 0, 0.06);
+    }
+
+    .clock-progress {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 15;
+      stroke-linecap: round;
+      stroke-dasharray: 880; /* 2 * pi * 140 */
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 0.25s linear, stroke 0.3s ease;
+    }
+
+    /* State animations */
+    .clock-stage.state-warning .clock-progress {
+      stroke: var(--warning);
+    }
+    .clock-stage.state-warning .interactive-clock-card {
+      animation: pulseWarning 1.4s infinite ease-in-out;
+    }
+
+    .clock-stage.state-overload .clock-progress {
+      stroke: var(--danger);
+    }
+    .clock-stage.state-overload .interactive-clock-card {
+      animation: pulseOverload 1.1s infinite ease-in-out;
+    }
+
+    @keyframes pulseWarning {
+      0%, 100% { filter: drop-shadow(0 0 15px var(--warning-glow)); }
+      50% { filter: drop-shadow(0 0 35px rgba(245, 158, 11, 0.5)); }
+    }
+
+    @keyframes pulseOverload {
+      0%, 100% { filter: drop-shadow(0 0 20px var(--danger-glow)); }
+      50% { filter: drop-shadow(0 0 50px rgba(239, 68, 68, 0.65)); }
+    }
+
+    .clock-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .overload-warning-badge {
+      display: none;
+      font-size: 0.72rem;
+      font-weight: 800;
+      background: var(--danger);
+      color: #fff;
+      padding: 3px 12px;
+      border-radius: 999px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+      animation: bounce 0.6s infinite alternate ease-in-out;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.5);
+    }
+
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-4px); }
+    }
+
+    .clock-time-display {
+      font-family: var(--font-mono);
+      font-size: 4.25rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--text-primary);
+      text-shadow: 0 4px 16px rgba(0,0,0,0.35);
+    }
+
+    .clock-time-display.negative {
+      color: var(--danger);
+    }
+
+    .clock-action-hint {
+      margin-top: 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.08);
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .key-badge {
+      background: rgba(0, 0, 0, 0.35);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    /* Live Controls Row */
+    .live-controls-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-action-primary {
+      background: var(--accent);
+      color: #ffffff;
+      border: none;
+      padding: 0.95rem 2.4rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      border-radius: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 18px var(--accent-glow);
+      transition: all 0.2s ease;
+    }
+
+    .btn-action-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-action-secondary {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 0.95rem 1.6rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-action-secondary:hover {
+      color: var(--text-primary);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-danger-outline {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+    }
+
+    .btn-danger-outline:hover {
+      background: var(--danger);
+      color: #ffffff;
+      border-color: var(--danger);
+    }
+
+    /* Questions Navigator Strip */
+    .navigator-strip-card {
+      margin-top: 2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      padding: 1.25rem 1.5rem;
+    }
+
+    .nav-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.95rem;
+    }
+
+    .nav-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-stats-summary {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .nav-chips-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      max-height: 160px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .q-nav-chip {
+      padding: 0.45rem 0.85rem;
+      border-radius: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: all 0.2s ease;
+    }
+
+    .q-nav-chip.current {
+      background: rgba(99, 102, 241, 0.2);
+      border-color: var(--accent);
+      color: #818cf8;
+      box-shadow: 0 0 14px var(--accent-glow);
+    }
+
+    .q-nav-chip.on-time {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: #34d399;
+    }
+
+    .q-nav-chip.overload {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.35);
+      color: #f87171;
+    }
+
+    .q-nav-chip.skipped {
+      background: rgba(107, 114, 128, 0.15);
+      border-color: rgba(107, 114, 128, 0.3);
+      color: #9ca3af;
+      text-decoration: line-through;
+    }
+
+    /* --- POST-EXAM COMPREHENSIVE ANALYTICS VIEW --- */
+    .analytics-hero {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .celebration-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1rem;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 25px var(--success-glow);
+    }
+
+    .celebration-icon svg {
+      width: 34px;
+      height: 34px;
+      stroke: #fff;
+    }
+
+    .analytics-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+
+    .analytics-subtitle {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.35rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .metric-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-val {
+      font-family: var(--font-mono);
+      font-size: 1.95rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .metric-val.success { color: var(--success); }
+    .metric-val.warning { color: var(--warning); }
+    .metric-val.danger { color: var(--danger); }
+    .metric-val.accent { color: var(--accent); }
+
+    .metric-sub {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+
+    /* Pacing Visualizer Bar Chart */
+    .chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .chart-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .chart-legend {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+    }
+
+    .chart-bars-scroll {
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+
+    .chart-bars-wrap {
+      display: flex;
+      align-items: flex-end;
+      height: 230px;
+      gap: 12px;
+      min-width: 100%;
+      padding-top: 30px;
+      border-bottom: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    .chart-bar-col {
+      flex: 1;
+      min-width: 38px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      justify-content: flex-end;
+      position: relative;
+    }
+
+    .bar-pill {
+      width: 100%;
+      max-width: 34px;
+      border-radius: 6px 6px 2px 2px;
+      transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .bar-pill:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 105%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f172a;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 10;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+    }
+
+    .bar-label {
+      margin-top: 0.5rem;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+    }
+
+    .target-time-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      border-top: 2px dashed rgba(255, 255, 255, 0.35);
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .target-line-tag {
+      position: absolute;
+      right: 0;
+      top: -20px;
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      color: var(--text-secondary);
+      background: var(--bg-card);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+    }
+
+    /* Score Calculation Card */
+    .score-summary-card {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(168, 85, 247, 0.08));
+      border: 1px solid var(--border-accent);
+      border-radius: var(--card-radius);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+    }
+
+    .score-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .score-item-title {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .score-item-val {
+      font-family: var(--font-mono);
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    /* Detailed Questions Table */
+    .table-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .data-table-wrap {
+      overflow-x: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    .data-table th {
+      padding: 0.8rem 1rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.75rem;
+    }
+
+    .data-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    .data-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .tag-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .mark-btn-group {
+      display: inline-flex;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .mark-btn {
+      background: transparent;
+      border: none;
+      padding: 5px 9px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.82rem;
+      transition: background 0.15s ease;
+    }
+
+    .mark-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+    }
+
+    .mark-btn.active-correct {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .mark-btn.active-wrong {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    /* Actions Footer */
+    .analytics-footer-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      animation: fadeIn 0.2s ease forwards;
+    }
+
+    .modal-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      max-width: 620px;
+      width: 100%;
+      padding: 1.75rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .modal-close:hover {
+      color: var(--text-primary);
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      header {
+        padding: 0.75rem 1rem;
+      }
+      .brand-title {
+        font-size: 1.1rem;
+      }
+      .hero-title {
+        font-size: 1.75rem;
+      }
+      .interactive-clock-card {
+        width: 290px;
+        height: 290px;
+      }
+      .clock-time-display {
+        font-size: 3.5rem;
+      }
+      .policy-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Print styling */
+    @media print {
+      body {
+        background: #fff !important;
+        color: #000 !important;
+      }
+      header, .analytics-footer-actions, .icon-btn, .header-actions {
+        display: none !important;
+      }
+      .card, .table-card, .chart-card, .score-summary-card {
+        border: 1px solid #ccc !important;
+        box-shadow: none !important;
+        background: #fff !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand" id="brandBtn">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+      </div>
+      <div class="brand-title">
+        CHRONOEXAM
+        <span class="pro-badge">PRO MAX</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <!-- Language Switcher: EN / বাংলা -->
+      <button class="icon-btn" id="langToggleBtn" title="Switch Language (English / বাংলা)">
+        <span id="langDisplay" style="font-weight: 700;">বাংলা</span>
+      </button>
+
+      <button class="icon-btn" id="historyBtn" title="Past Exam Sessions">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      </button>
+
+      <button class="icon-btn" id="soundToggleBtn" title="Sound Effects (On/Off)">
+        <svg id="soundIconOn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+        <svg id="soundIconOff" style="display:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <line x1="23" y1="9" x2="17" y2="15"></line>
+          <line x1="17" y1="9" x2="23" y2="15"></line>
+        </svg>
+      </button>
+
+      <button class="icon-btn" id="fullscreenBtn" title="Distraction-Free Fullscreen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+        </svg>
+      </button>
+
+      <button class="icon-btn" id="themeToggleBtn" title="Toggle Theme">
+        <svg id="themeIconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg id="themeIconMoon" style="display:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- VIEW 1: SETUP SCREEN -->
+    <section id="setupView" class="view-section active">
+      <div class="hero-banner">
+        <div class="hero-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          <span data-i18n="badgeTitle">Precision Question Pacer & Analytics</span>
+        </div>
+        <h1 class="hero-title" data-i18n="heroTitle">Master Your Exam Timing</h1>
+        <p class="hero-subtitle" data-i18n="heroSub">Optimize your speed per question for MCQs and CQs with real-time overload feedback, negative timers, and comprehensive performance analytics.</p>
+      </div>
+
+      <div class="setup-grid">
+        <!-- Card 1: Exam Format & Timing -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            </div>
+            <div class="card-title" data-i18n="card1Title">Exam Format & Target Time</div>
+          </div>
+
+          <!-- MCQ / CQ Selector -->
+          <div class="pill-group">
+            <div class="pill-option active" id="modeMCQ" data-i18n="mcqLabel">MCQ (Multiple Choice)</div>
+            <div class="pill-option" id="modeCQ" data-i18n="cqLabel">CQ (Creative / Written)</div>
+          </div>
+
+          <!-- Presets -->
+          <div class="input-label" data-i18n="quickPresets">Standard Presets</div>
+          <div class="presets-container" id="presetsList">
+            <!-- Populated dynamically -->
+          </div>
+
+          <!-- Time Inputs -->
+          <div class="input-row">
+            <div class="input-group">
+              <label class="input-label" for="inputMinutes" data-i18n="minutesLabel">Minutes</label>
+              <input type="number" id="inputMinutes" class="custom-input" min="0" max="180" value="1" />
+            </div>
+            <div class="input-group">
+              <label class="input-label" for="inputSeconds" data-i18n="secondsLabel">Seconds</label>
+              <input type="number" id="inputSeconds" class="custom-input" min="0" max="59" value="0" />
+            </div>
+          </div>
+
+          <!-- Total Questions -->
+          <div class="input-group">
+            <label class="input-label" for="inputTotalQuestions" data-i18n="totalQsLabel">Total Questions (0 for Open / Unlimited)</label>
+            <input type="number" id="inputTotalQuestions" class="custom-input" min="0" max="200" value="25" />
+          </div>
+        </div>
+
+        <!-- Card 2: Expiry & Audio Rules -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+            </div>
+            <div class="card-title" data-i18n="card2Title">Pacing Policy & Audio Cues</div>
+          </div>
+
+          <!-- Policy Selector: Overload vs Strict Auto-Skip -->
+          <div class="input-label" data-i18n="policyLabel">When Time Runs Out</div>
+          <div class="policy-grid">
+            <div class="policy-card active" id="policyOverload">
+              <span class="policy-tag tag-overload" data-i18n="overloadTag">Negative Timer</span>
+              <div class="policy-title" data-i18n="overloadTitle">
+                Overload Mode
+              </div>
+              <div class="policy-desc" data-i18n="overloadDesc">
+                Does not skip! Displays a red negative countdown showing exact overtime spent to highlight bottlenecks.
+              </div>
+            </div>
+
+            <div class="policy-card" id="policyStrict">
+              <span class="policy-tag tag-strict" data-i18n="strictTag">Auto-Skip</span>
+              <div class="policy-title" data-i18n="strictTitle">
+                Strict Pass
+              </div>
+              <div class="policy-desc" data-i18n="strictDesc">
+                Automatically cuts off and skips to the next question. Prevents spending too much time on one question.
+              </div>
+            </div>
+          </div>
+
+          <!-- Audio Signals -->
+          <div class="input-label" data-i18n="audioPreview">Audio Signals Preview</div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="preset-chip" id="testStartSound">🔔 Start Beep</button>
+            <button class="preset-chip" id="testWarningSound">⚠️ 10s / 5s Alert</button>
+            <button class="preset-chip" id="testEndSound">🚨 Time's Up</button>
+          </div>
+          <div style="margin-top: 1rem; font-size: 0.75rem; color: var(--text-muted);" data-i18n="audioNote">
+            * Synthesized in real-time via Web Audio API. 100% offline & zero network lag.
+          </div>
+        </div>
+      </div>
+
+      <div class="start-btn-wrap">
+        <button class="btn-super-pro" id="startExamBtn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          <span data-i18n="startExamBtn">START EXAM SESSION</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- VIEW 2: ACTIVE EXAM SCREEN -->
+    <section id="examView" class="view-section">
+      <!-- Status Bar -->
+      <div class="exam-status-bar">
+        <div class="q-indicator">
+          <span data-i18n="qWord">Question</span>
+          <span class="q-number-big" id="currentQDisplay">1</span>
+          <span class="q-total-small" id="totalQDisplay">/ 25</span>
+        </div>
+
+        <div class="exam-badges">
+          <span class="status-badge badge-mcq" id="activeFormatBadge">MCQ</span>
+          <span class="status-badge badge-overload" id="activePolicyBadge">Overload Active</span>
+        </div>
+
+        <div class="total-elapsed">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span data-i18n="totalElapsedLabel">Total Time:</span> <span id="totalElapsedDisplay" style="font-weight: 700; color: var(--text-primary);">00:00</span>
+        </div>
+      </div>
+
+      <!-- Main Stage: Interactive Clock -->
+      <div class="clock-stage" id="clockStage">
+        <div class="interactive-clock-card" id="clockClickArea" tabindex="0" role="button" aria-label="Clock - Click to Advance Question">
+          <svg class="clock-svg" viewBox="0 0 320 320">
+            <circle class="clock-track" cx="160" cy="160" r="140"></circle>
+            <circle class="clock-progress" id="clockRing" cx="160" cy="160" r="140"></circle>
+          </svg>
+
+          <div class="clock-content">
+            <div class="overload-warning-badge" id="overloadBadge">⚠️ OVERLOAD</div>
+            <div class="clock-time-display" id="timeDisplay">01:00</div>
+            <div class="clock-action-hint">
+              <span data-i18n="clickOr">Click clock or</span>
+              <span class="key-badge">SPACE</span>
+              <span data-i18n="nextHint">when finished</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- In-Exam Buttons -->
+        <div class="live-controls-wrap">
+          <button class="btn-action-secondary" id="pauseResumeBtn">
+            <svg id="pauseIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+            <svg id="playIcon" style="display:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <span id="pauseBtnText" data-i18n="pauseBtn">Pause</span>
+          </button>
+          
+          <button class="btn-action-primary" id="nextQuestionBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            <span data-i18n="doneNextBtn">Done! Next Question</span>
+          </button>
+
+          <button class="btn-action-secondary" id="skipQuestionBtn" title="Skip this question without answering">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+            <span data-i18n="skipBtn">Skip</span>
+          </button>
+
+          <button class="btn-action-secondary btn-danger-outline" id="endExamBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+            <span data-i18n="endExamBtn">End Exam</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Question Navigation & History Strip -->
+      <div class="navigator-strip-card">
+        <div class="nav-header">
+          <div class="nav-title" data-i18n="sessionTimeline">Session Pacing Timeline</div>
+          <div class="nav-stats-summary" id="liveSummaryText">0 Completed • Avg: 0s</div>
+        </div>
+        <div class="nav-chips-container" id="navChipsContainer">
+          <!-- Dynamic Chips -->
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: COMPREHENSIVE ANALYTICS VIEW -->
+    <section id="analyticsView" class="view-section">
+      <div class="analytics-hero">
+        <div class="celebration-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <h2 class="analytics-title" data-i18n="analyticsTitle">Exam Performance Analysis</h2>
+        <p class="analytics-subtitle" id="analyticsSessionDate">Detailed breakdown of speed, pacing, and time distribution.</p>
+      </div>
+
+      <!-- High-level Metric Cards -->
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-label" data-i18n="metricDoneLabel">Questions Completed</div>
+          <div class="metric-val accent" id="metricTotalDone">0</div>
+          <div class="metric-sub" id="metricCompletionRate">0% of target</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-label" data-i18n="metricOnTimeLabel">On-Time Accuracy</div>
+          <div class="metric-val success" id="metricOnTimeRate">0%</div>
+          <div class="metric-sub" id="metricOnTimeDetail">0 on-time • 0 overtime</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-label" data-i18n="metricAvgLabel">Average Time / Question</div>
+          <div class="metric-val" id="metricAvgTime">00:00</div>
+          <div class="metric-sub" id="metricTargetCompare">Target: 01:00</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-label" data-i18n="metricExtremesLabel">Pacing Extremes</div>
+          <div class="metric-val" style="font-size: 1.35rem;" id="metricExtremes">⚡ 0s / 🐢 0s</div>
+          <div class="metric-sub" id="metricExtremesDetail">Fastest: Q- • Slowest: Q-</div>
+        </div>
+      </div>
+
+      <!-- Score & Accuracy Assessment Card -->
+      <div class="score-summary-card">
+        <div class="score-item">
+          <div class="score-item-title" data-i18n="totalScoreTitle">Evaluated Marks</div>
+          <div class="score-item-val" id="scoreCalculated">0.00 / 0</div>
+        </div>
+        <div class="score-item">
+          <div class="score-item-title" data-i18n="accuracyTitle">Review Accuracy</div>
+          <div class="score-item-val" style="color: var(--success);" id="accuracyPercent">0%</div>
+        </div>
+        <div class="score-item">
+          <div class="score-item-title" data-i18n="negativePenaltyTitle">Overtime Penalty</div>
+          <div class="score-item-val" style="color: var(--warning);" id="totalOvertimePenalty">0s</div>
+        </div>
+        <div class="score-item">
+          <div class="score-item-title" data-i18n="avgCorrectTimeTitle">Avg Time (Correct)</div>
+          <div class="score-item-val" style="color: #60a5fa;" id="avgCorrectTime">--</div>
+        </div>
+      </div>
+
+      <!-- Visual Pacing Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+            <span data-i18n="chartTitle">Question-by-Question Duration Breakdown</span>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background: var(--success);"></div>
+              <span data-i18n="legendFast">Fast (&lt;80%)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background: var(--warning);"></div>
+              <span data-i18n="legendOnTarget">On Target (80-100%)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background: var(--danger);"></div>
+              <span data-i18n="legendOverload">Overload (&gt;100%)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background: #6b7280;"></div>
+              <span data-i18n="legendSkipped">Skipped</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-bars-scroll">
+          <div class="chart-bars-wrap" id="chartBarsContainer">
+            <!-- Dynamic Bar Columns -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Breakdown Table with Optional Marking -->
+      <div class="table-card">
+        <div class="table-header">
+          <div class="chart-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            <span data-i18n="tableTitle">Complete Question Log & Score Card</span>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);" data-i18n="markingTip">
+            Tip: Mark questions as ✔️ or ❌ to evaluate accuracy vs time correlation.
+          </div>
+        </div>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th data-i18n="thQ">#</th>
+                <th data-i18n="thTarget">Target Time</th>
+                <th data-i18n="thActual">Time Spent</th>
+                <th data-i18n="thDiff">Difference</th>
+                <th data-i18n="thStatus">Pacing Status</th>
+                <th data-i18n="thReview">Review Mark</th>
+              </tr>
+            </thead>
+            <tbody id="analyticsTableBody">
+              <!-- Dynamic rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="analytics-footer-actions">
+        <button class="btn-action-primary" id="newSessionBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+          <span data-i18n="newSessionBtn">Start New Practice</span>
+        </button>
+        <button class="btn-action-secondary" id="printReportBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          <span data-i18n="printReportBtn">Print / PDF Report</span>
+        </button>
+        <button class="btn-action-secondary" id="exportCsvBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span data-i18n="exportCsvBtn">Export CSV</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- HISTORY MODAL -->
+  <div class="modal-overlay" id="historyModal">
+    <div class="modal-card">
+      <button class="modal-close" id="closeHistoryModal">✕</button>
+      <div class="card-header" style="margin-bottom: 1rem;">
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+        <div class="card-title" data-i18n="pastSessionsTitle">Past Practice Sessions</div>
+      </div>
+      <div id="historyListContainer" style="max-height: 380px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem;">
+        <!-- Dynamic past sessions -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================================
+       I18N: BILINGUAL TRANSLATIONS (English & Bengali)
+       ========================================================================= */
+    const I18N = {
+      en: {
+        badgeTitle: "Precision Question Pacer & Analytics",
+        heroTitle: "Master Your Exam Timing",
+        heroSub: "Optimize your speed per question for MCQs and CQs with real-time overload feedback, negative timers, and comprehensive performance analytics.",
+        card1Title: "Exam Format & Target Time",
+        mcqLabel: "MCQ (Multiple Choice)",
+        cqLabel: "CQ (Creative / Written)",
+        quickPresets: "Standard Presets",
+        minutesLabel: "Minutes",
+        secondsLabel: "Seconds",
+        totalQsLabel: "Total Questions (0 for Open / Unlimited)",
+        card2Title: "Pacing Policy & Audio Cues",
+        policyLabel: "When Time Runs Out",
+        overloadTag: "Negative Timer",
+        overloadTitle: "Overload Mode",
+        overloadDesc: "Does not skip! Displays a red negative countdown showing exact overtime spent to highlight bottlenecks.",
+        strictTag: "Auto-Skip",
+        strictTitle: "Strict Pass",
+        strictDesc: "Automatically cuts off and skips to the next question. Prevents spending too much time on one question.",
+        audioPreview: "Audio Signals Preview",
+        audioNote: "* Synthesized in real-time via Web Audio API. 100% offline & zero network lag.",
+        startExamBtn: "START EXAM SESSION",
+        qWord: "Question",
+        totalElapsedLabel: "Total Time:",
+        clickOr: "Click clock or",
+        nextHint: "when finished",
+        pauseBtn: "Pause",
+        resumeBtn: "Resume",
+        doneNextBtn: "Done! Next Question",
+        skipBtn: "Skip",
+        endExamBtn: "End Exam",
+        sessionTimeline: "Session Pacing Timeline",
+        analyticsTitle: "Exam Performance Analysis",
+        metricDoneLabel: "Questions Completed",
+        metricOnTimeLabel: "On-Time Accuracy",
+        metricAvgLabel: "Average Time / Question",
+        metricExtremesLabel: "Pacing Extremes",
+        totalScoreTitle: "Evaluated Marks",
+        accuracyTitle: "Review Accuracy",
+        negativePenaltyTitle: "Total Overtime",
+        avgCorrectTimeTitle: "Avg Time (Correct)",
+        chartTitle: "Question-by-Question Duration Breakdown",
+        legendFast: "Fast (<80%)",
+        legendOnTarget: "On Target (80-100%)",
+        legendOverload: "Overload (>100%)",
+        legendSkipped: "Skipped",
+        tableTitle: "Complete Question Log & Score Card",
+        markingTip: "Tip: Mark questions as ✔️ or ❌ to evaluate accuracy vs time correlation.",
+        thQ: "#",
+        thTarget: "Target Time",
+        thActual: "Time Spent",
+        thDiff: "Difference",
+        thStatus: "Pacing Status",
+        thReview: "Review Mark",
+        newSessionBtn: "Start New Practice",
+        printReportBtn: "Print / PDF Report",
+        exportCsvBtn: "Export CSV",
+        pastSessionsTitle: "Past Practice Sessions"
+      },
+      bn: {
+        badgeTitle: "নির্ভুল প্রশ্ন টাইমার ও অ্যানালাইটিক্স",
+        heroTitle: "পরীক্ষার টাইম ম্যানেজমেন্ট জয় করুন",
+        heroSub: "MCQ এবং CQ পরীক্ষার জন্য প্রতিটি প্রশ্নের সময় নিখুঁতভাবে নির্ধারণ করুন। ওভারলোড নেগেটিভ টাইমার ও বিস্তারিত এনালাইসিসের মাধ্যমে আপনার গতি বাড়ান।",
+        card1Title: "পরীক্ষার ধরন ও নির্দিষ্ট সময়",
+        mcqLabel: "MCQ (বহুনির্বাচনী প্রশ্ন)",
+        cqLabel: "CQ (সৃজনশীল / লিখিত প্রশ্ন)",
+        quickPresets: "স্ট্যান্ডার্ড প্রিসেটসমূহ",
+        minutesLabel: "মিনিট",
+        secondsLabel: "সেকেন্ড",
+        totalQsLabel: "মোট প্রশ্ন সংখ্যা (আনলিমিটেডের জন্য ০ দিন)",
+        card2Title: "টাইম আউট পলিসি ও সাউন্ড",
+        policyLabel: "সময় শেষ হলে কী ঘটবে?",
+        overloadTag: "নেগেটিভ টাইমার",
+        overloadTitle: "ওভারলোড মোড (Overload)",
+        overloadDesc: "প্রশ্ন স্কিপ হবে না! লাল রঙের নেগেটিভ টাইমার চালু হয়ে দেখাবে কত সেকেন্ড অতিরিক্ত সময় লেগেছে।",
+        strictTag: "অটো স্কিপ",
+        strictTitle: "স্ট্রিক্ট পাস (Strict Pass)",
+        strictDesc: "সময় শেষ হওয়ামাত্রই স্বয়ংক্রিয়ভাবে প্রশ্নটি স্কিপ হয়ে যাবে এবং আর উত্তর দেওয়া যাবে না।",
+        audioPreview: "সাউন্ড সিগন্যাল প্রিভিউ",
+        audioNote: "* ওয়েব অডিও এপিআই দিয়ে তাৎক্ষণিক সিন্থেসাইজড। অফলাইনে ১০০% কার্যকর।",
+        startExamBtn: "পরীক্ষা সেশন শুরু করুন",
+        qWord: "প্রশ্ন নং",
+        totalElapsedLabel: "মোট অতিক্রান্ত সময়:",
+        clickOr: "ঘড়িতে ক্লিক বা",
+        nextHint: "চাপুন শেষ হলে",
+        pauseBtn: "পজ",
+        resumeBtn: "পুনরায় শুরু",
+        doneNextBtn: "হয়েছে! পরবর্তী প্রশ্ন",
+        skipBtn: "স্কিপ",
+        endExamBtn: "পরীক্ষা শেষ করুন",
+        sessionTimeline: "সেশনের পেসিং টাইমলাইন",
+        analyticsTitle: "সম্পূর্ণ পরীক্ষার ফলাফল এনালাইসিস",
+        metricDoneLabel: "সম্পন্ন প্রশ্ন",
+        metricOnTimeLabel: "অন-টাইম রেট",
+        metricAvgLabel: "প্রতি প্রশ্নে গড় সময়",
+        metricExtremesLabel: "সবচেয়ে দ্রুত / ধীর",
+        totalScoreTitle: "প্রাপ্ত মার্কস",
+        accuracyTitle: "সঠিক উত্তর রেট",
+        negativePenaltyTitle: "মোট অতিরিক্ত সময়",
+        avgCorrectTimeTitle: "সঠিক উত্তরের গড় সময়",
+        chartTitle: "প্রশ্নভিত্তিক সময় ব্যয়ের গ্রাফ চার্ট",
+        legendFast: "দ্রুত (<৮০%)",
+        legendOnTarget: "সঠিক সময়ে (৮০-১০০%)",
+        legendOverload: "ওভারলোড (>১০০%)",
+        legendSkipped: "স্কিপড",
+        tableTitle: "প্রতিটি প্রশ্নের বিস্তারিত লগ ও স্কোরকার্ড",
+        markingTip: "টিপস: প্রতিটি প্রশ্নের উত্তর সঠিক ✔️ বা ভুল ❌ মার্ক করে নির্ভুলতা যাচাই করুন।",
+        thQ: "নং",
+        thTarget: "নির্ধারিত সময়",
+        thActual: "ব্যয়িত সময়",
+        thDiff: "পার্থক্য",
+        thStatus: "পেসিং স্ট্যাটাস",
+        thReview: "রিভিউ মার্ক",
+        newSessionBtn: "নতুন পরীক্ষা শুরু করুন",
+        printReportBtn: "প্রিন্ট / PDF রিপোর্ট",
+        exportCsvBtn: "CSV এক্সপোর্ট",
+        pastSessionsTitle: "পূর্ববর্তী পরীক্ষার সেশনসমূহ"
+      }
+    };
+
+    let currentLang = 'en';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      const t = I18N[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+      });
+      document.getElementById('langDisplay').textContent = lang === 'en' ? 'বাংলা' : 'English';
+      renderPresets();
+    }
+
+    document.getElementById('langToggleBtn').addEventListener('click', () => {
+      setLanguage(currentLang === 'en' ? 'bn' : 'en');
+    });
+
+    /* =========================================================================
+       AUDIO SYNTHESIZER (Web Audio API)
+       ========================================================================= */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+
+      initContext() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            this.ctx = new AudioContext();
+          }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      playTone(freq, type = 'sine', duration = 0.15, gainVal = 0.25, startDelay = 0) {
+        if (!this.enabled) return;
+        this.initContext();
+        if (!this.ctx) return;
+
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        const now = this.ctx.currentTime + startDelay;
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, now);
+
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.exponentialRampToValueAtTime(gainVal, now + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + duration);
+      }
+
+      // 1. Initial Start Beep
+      playStartBeep() {
+        this.playTone(523.25, 'sine', 0.12, 0.22, 0);       // C5
+        this.playTone(659.25, 'sine', 0.16, 0.26, 0.09);   // E5
+      }
+
+      // 2. Warning Sound (10s & 5s remaining)
+      playWarningAlert() {
+        this.playTone(880, 'sine', 0.08, 0.2, 0);          // A5
+        this.playTone(880, 'sine', 0.10, 0.22, 0.1);       // A5
+      }
+
+      // 3. Time's Up Sound (Clear alert chime / gentle buzzer)
+      playTimesUp() {
+        this.playTone(440, 'triangle', 0.15, 0.35, 0);     // A4
+        this.playTone(370, 'triangle', 0.18, 0.35, 0.12);   // F#4
+        this.playTone(330, 'triangle', 0.32, 0.35, 0.24);   // E4
+      }
+
+      // 4. Click Feedback
+      playClick() {
+        this.playTone(1050, 'sine', 0.04, 0.12, 0);
+      }
+    }
+
+    const soundEngine = new SoundEngine();
+
+    /* =========================================================================
+       PRESETS & CONFIG
+       ========================================================================= */
+    const PRESETS = {
+      MCQ: {
+        en: [
+          { label: 'HSC Board (1m)', minutes: 1, seconds: 0 },
+          { label: 'Medical Admission (45s)', minutes: 0, seconds: 45 },
+          { label: 'BUET / Engineering (1m 30s)', minutes: 1, seconds: 30 },
+          { label: 'Varsity A Unit (45s)', minutes: 0, seconds: 45 },
+          { label: 'Standard MCQ (2m)', minutes: 2, seconds: 0 },
+          { label: 'Speed Drill (30s)', minutes: 0, seconds: 30 }
+        ],
+        bn: [
+          { label: 'এইচএসসি বোর্ড (১ মি.)', minutes: 1, seconds: 0 },
+          { label: 'মেডিকেল ভর্তি (৪৫ সে.)', minutes: 0, seconds: 45 },
+          { label: 'বুয়েট ভর্তি (১ মি. ৩০ সে.)', minutes: 1, seconds: 30 },
+          { label: 'ভার্সিটি ক ইউনিট (৪৫ সে.)', minutes: 0, seconds: 45 },
+          { label: 'স্ট্যান্ডার্ড MCQ (২ মি.)', minutes: 2, seconds: 0 },
+          { label: 'স্পিড ড্রিল (৩০ সে.)', minutes: 0, seconds: 30 }
+        ]
+      },
+      CQ: {
+        en: [
+          { label: 'HSC Board CQ (21m 25s)', minutes: 21, seconds: 25 },
+          { label: 'Standard CQ (20m)', minutes: 20, seconds: 0 },
+          { label: 'Math / Physics CQ (18m)', minutes: 18, seconds: 0 },
+          { label: 'Long CQ (25m)', minutes: 25, seconds: 0 }
+        ],
+        bn: [
+          { label: 'এইচএসসি বোর্ড সিকিউ (২১ মি. ২৫ সে.)', minutes: 21, seconds: 25 },
+          { label: 'স্ট্যান্ডার্ড সিকিউ (২০ মি.)', minutes: 20, seconds: 0 },
+          { label: 'গণিত / পদার্থ সিকিউ (১৮ মি.)', minutes: 18, seconds: 0 },
+          { label: 'বড় রচনামূলক সিকিউ (২৫ মি.)', minutes: 25, seconds: 0 }
+        ]
+      }
+    };
+
+    const state = {
+      format: 'MCQ',
+      policy: 'overload',
+      targetSeconds: 60,
+      totalQuestions: 25,
+      currentQuestionIndex: 1,
+      
+      currentQuestionSeconds: 0,
+      totalElapsedSeconds: 0,
+      isPaused: false,
+      isRunning: false,
+      intervalId: null,
+
+      warningTriggered10: false,
+      warningTriggered5: false,
+      timesUpTriggered: false,
+
+      questionsLog: [],
+      history: []
+    };
+
+    try {
+      const saved = localStorage.getItem('chronoexam_history');
+      if (saved) state.history = JSON.parse(saved);
+    } catch(e) {
+      console.warn('LocalStorage:', e);
+    }
+
+    /* Views */
+    const views = {
+      setup: document.getElementById('setupView'),
+      exam: document.getElementById('examView'),
+      analytics: document.getElementById('analyticsView')
+    };
+
+    const dom = {
+      brandBtn: document.getElementById('brandBtn'),
+      historyBtn: document.getElementById('historyBtn'),
+      soundToggleBtn: document.getElementById('soundToggleBtn'),
+      soundIconOn: document.getElementById('soundIconOn'),
+      soundIconOff: document.getElementById('soundIconOff'),
+      fullscreenBtn: document.getElementById('fullscreenBtn'),
+      themeToggleBtn: document.getElementById('themeToggleBtn'),
+      themeIconSun: document.getElementById('themeIconSun'),
+      themeIconMoon: document.getElementById('themeIconMoon'),
+
+      modeMCQ: document.getElementById('modeMCQ'),
+      modeCQ: document.getElementById('modeCQ'),
+      presetsList: document.getElementById('presetsList'),
+      inputMinutes: document.getElementById('inputMinutes'),
+      inputSeconds: document.getElementById('inputSeconds'),
+      inputTotalQuestions: document.getElementById('inputTotalQuestions'),
+      policyOverload: document.getElementById('policyOverload'),
+      policyStrict: document.getElementById('policyStrict'),
+      startExamBtn: document.getElementById('startExamBtn'),
+      testStartSound: document.getElementById('testStartSound'),
+      testWarningSound: document.getElementById('testWarningSound'),
+      testEndSound: document.getElementById('testEndSound'),
+
+      currentQDisplay: document.getElementById('currentQDisplay'),
+      totalQDisplay: document.getElementById('totalQDisplay'),
+      activeFormatBadge: document.getElementById('activeFormatBadge'),
+      activePolicyBadge: document.getElementById('activePolicyBadge'),
+      totalElapsedDisplay: document.getElementById('totalElapsedDisplay'),
+      clockStage: document.getElementById('clockStage'),
+      clockClickArea: document.getElementById('clockClickArea'),
+      clockRing: document.getElementById('clockRing'),
+      timeDisplay: document.getElementById('timeDisplay'),
+      overloadBadge: document.getElementById('overloadBadge'),
+      pauseResumeBtn: document.getElementById('pauseResumeBtn'),
+      pauseIcon: document.getElementById('pauseIcon'),
+      playIcon: document.getElementById('playIcon'),
+      pauseBtnText: document.getElementById('pauseBtnText'),
+      nextQuestionBtn: document.getElementById('nextQuestionBtn'),
+      skipQuestionBtn: document.getElementById('skipQuestionBtn'),
+      endExamBtn: document.getElementById('endExamBtn'),
+      liveSummaryText: document.getElementById('liveSummaryText'),
+      navChipsContainer: document.getElementById('navChipsContainer'),
+
+      analyticsSessionDate: document.getElementById('analyticsSessionDate'),
+      metricTotalDone: document.getElementById('metricTotalDone'),
+      metricCompletionRate: document.getElementById('metricCompletionRate'),
+      metricOnTimeRate: document.getElementById('metricOnTimeRate'),
+      metricOnTimeDetail: document.getElementById('metricOnTimeDetail'),
+      metricAvgTime: document.getElementById('metricAvgTime'),
+      metricTargetCompare: document.getElementById('metricTargetCompare'),
+      metricExtremes: document.getElementById('metricExtremes'),
+      metricExtremesDetail: document.getElementById('metricExtremesDetail'),
+      scoreCalculated: document.getElementById('scoreCalculated'),
+      accuracyPercent: document.getElementById('accuracyPercent'),
+      totalOvertimePenalty: document.getElementById('totalOvertimePenalty'),
+      avgCorrectTime: document.getElementById('avgCorrectTime'),
+      chartBarsContainer: document.getElementById('chartBarsContainer'),
+      analyticsTableBody: document.getElementById('analyticsTableBody'),
+      newSessionBtn: document.getElementById('newSessionBtn'),
+      printReportBtn: document.getElementById('printReportBtn'),
+      exportCsvBtn: document.getElementById('exportCsvBtn'),
+
+      historyModal: document.getElementById('historyModal'),
+      closeHistoryModal: document.getElementById('closeHistoryModal'),
+      historyListContainer: document.getElementById('historyListContainer')
+    };
+
+    function formatTime(totalSeconds) {
+      const isNeg = totalSeconds < 0;
+      const abs = Math.abs(totalSeconds);
+      const mins = Math.floor(abs / 60);
+      const secs = abs % 60;
+      const formatted = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      return isNeg ? `-${formatted}` : formatted;
+    }
+
+    function switchView(viewName) {
+      Object.keys(views).forEach(k => {
+        if (k === viewName) {
+          views[k].classList.add('active');
+        } else {
+          views[k].classList.remove('active');
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderPresets() {
+      dom.presetsList.innerHTML = '';
+      const list = PRESETS[state.format][currentLang] || PRESETS[state.format]['en'];
+      list.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'preset-chip';
+        btn.textContent = item.label;
+        btn.addEventListener('click', () => {
+          dom.inputMinutes.value = item.minutes;
+          dom.inputSeconds.value = item.seconds;
+          document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+          btn.classList.add('active');
+        });
+        dom.presetsList.appendChild(btn);
+      });
+    }
+
+    dom.modeMCQ.addEventListener('click', () => {
+      state.format = 'MCQ';
+      dom.modeMCQ.classList.add('active');
+      dom.modeCQ.classList.remove('active');
+      dom.inputMinutes.value = 1;
+      dom.inputSeconds.value = 0;
+      dom.inputTotalQuestions.value = 25;
+      renderPresets();
+    });
+
+    dom.modeCQ.addEventListener('click', () => {
+      state.format = 'CQ';
+      dom.modeCQ.classList.add('active');
+      dom.modeMCQ.classList.remove('active');
+      dom.inputMinutes.value = 21;
+      dom.inputSeconds.value = 25;
+      dom.inputTotalQuestions.value = 7;
+      renderPresets();
+    });
+
+    dom.policyOverload.addEventListener('click', () => {
+      state.policy = 'overload';
+      dom.policyOverload.classList.add('active');
+      dom.policyStrict.classList.remove('active');
+    });
+
+    dom.policyStrict.addEventListener('click', () => {
+      state.policy = 'strict';
+      dom.policyStrict.classList.add('active');
+      dom.policyOverload.classList.remove('active');
+    });
+
+    dom.testStartSound.addEventListener('click', () => soundEngine.playStartBeep());
+    dom.testWarningSound.addEventListener('click', () => soundEngine.playWarningAlert());
+    dom.testEndSound.addEventListener('click', () => soundEngine.playTimesUp());
+
+    dom.soundToggleBtn.addEventListener('click', () => {
+      soundEngine.enabled = !soundEngine.enabled;
+      if (soundEngine.enabled) {
+        dom.soundIconOn.style.display = 'block';
+        dom.soundIconOff.style.display = 'none';
+        soundEngine.playClick();
+      } else {
+        dom.soundIconOn.style.display = 'none';
+        dom.soundIconOff.style.display = 'block';
+      }
+    });
+
+    dom.themeToggleBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+      if (isDark) {
+        document.documentElement.setAttribute('data-theme', 'light');
+        dom.themeIconSun.style.display = 'none';
+        dom.themeIconMoon.style.display = 'block';
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        dom.themeIconSun.style.display = 'block';
+        dom.themeIconMoon.style.display = 'none';
+      }
+    });
+
+    dom.fullscreenBtn.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    });
+
+    dom.startExamBtn.addEventListener('click', () => {
+      const mins = parseInt(dom.inputMinutes.value) || 0;
+      const secs = parseInt(dom.inputSeconds.value) || 0;
+      const target = mins * 60 + secs;
+
+      if (target <= 0) {
+        alert(currentLang === 'bn' ? 'অনুগ্রহ করে সঠিক সময় নির্ধারণ করুন।' : 'Please specify a valid question duration.');
+        return;
+      }
+
+      state.targetSeconds = target;
+      state.totalQuestions = parseInt(dom.inputTotalQuestions.value) || 0;
+      state.currentQuestionIndex = 1;
+      state.questionsLog = [];
+      state.totalElapsedSeconds = 0;
+
+      startExamSession();
+    });
+
+    /* =========================================================================
+       EXAM RUNNER LOGIC
+       ========================================================================= */
+    function startExamSession() {
+      switchView('exam');
+
+      dom.activeFormatBadge.textContent = state.format;
+      dom.activeFormatBadge.className = `status-badge ${state.format === 'MCQ' ? 'badge-mcq' : 'badge-cq'}`;
+
+      dom.activePolicyBadge.textContent = state.policy === 'overload' 
+        ? (currentLang === 'bn' ? 'ওভারলোড মোড' : 'Overload Active') 
+        : (currentLang === 'bn' ? 'স্ট্রিক্ট পাস' : 'Strict Auto-Skip');
+      dom.activePolicyBadge.className = `status-badge ${state.policy === 'overload' ? 'badge-overload' : 'badge-strict'}`;
+
+      dom.totalQDisplay.textContent = state.totalQuestions > 0 ? `/ ${state.totalQuestions}` : '/ ∞';
+
+      renderNavChips();
+      startQuestion(1);
+
+      if (state.intervalId) clearInterval(state.intervalId);
+      state.isRunning = true;
+      state.isPaused = false;
+      updatePauseUI();
+
+      state.intervalId = setInterval(tick, 1000);
+    }
+
+    function startQuestion(index) {
+      state.currentQuestionIndex = index;
+      state.currentQuestionSeconds = 0;
+      state.warningTriggered10 = false;
+      state.warningTriggered5 = false;
+      state.timesUpTriggered = false;
+
+      dom.currentQDisplay.textContent = index;
+      dom.clockStage.className = 'clock-stage';
+      dom.overloadBadge.style.display = 'none';
+      dom.timeDisplay.classList.remove('negative');
+
+      // Play start sound (as requested in the audio!)
+      soundEngine.playStartBeep();
+
+      updateClockDisplay();
+      updateNavChips();
+    }
+
+    function tick() {
+      if (state.isPaused || !state.isRunning) return;
+
+      state.currentQuestionSeconds++;
+      state.totalElapsedSeconds++;
+
+      dom.totalElapsedDisplay.textContent = formatTime(state.totalElapsedSeconds);
+
+      const remaining = state.targetSeconds - state.currentQuestionSeconds;
+
+      // 10s warning
+      if (remaining === 10 && !state.warningTriggered10) {
+        state.warningTriggered10 = true;
+        soundEngine.playWarningAlert();
+      }
+
+      // 5s warning
+      if (remaining === 5 && !state.warningTriggered5) {
+        state.warningTriggered5 = true;
+        soundEngine.playWarningAlert();
+      }
+
+      // 0s Time's Up
+      if (remaining === 0 && !state.timesUpTriggered) {
+        state.timesUpTriggered = true;
+        soundEngine.playTimesUp();
+
+        if (state.policy === 'strict') {
+          completeQuestion('skipped');
+          return;
+        }
+      }
+
+      updateClockDisplay();
+    }
+
+    function updateClockDisplay() {
+      const remaining = state.targetSeconds - state.currentQuestionSeconds;
+      const ringCircumference = 880;
+
+      if (remaining >= 0) {
+        dom.timeDisplay.textContent = formatTime(remaining);
+        dom.timeDisplay.classList.remove('negative');
+        dom.overloadBadge.style.display = 'none';
+
+        const fraction = remaining / state.targetSeconds;
+        const offset = ringCircumference * (1 - fraction);
+        dom.clockRing.style.strokeDashoffset = offset;
+
+        if (remaining <= 10 && remaining > 0) {
+          dom.clockStage.className = 'clock-stage state-warning';
+        } else {
+          dom.clockStage.className = 'clock-stage';
+        }
+      } else {
+        // OVERLOAD MODE (Negative timer!)
+        const overtime = Math.abs(remaining);
+        dom.timeDisplay.textContent = `-${formatTime(overtime)}`;
+        dom.timeDisplay.classList.add('negative');
+        dom.overloadBadge.style.display = 'inline-block';
+        dom.overloadBadge.textContent = currentLang === 'bn' 
+          ? `⚠️ ওভারলোড (+${overtime} সে.)` 
+          : `⚠️ OVERLOAD (+${overtime}s)`;
+
+        dom.clockStage.className = 'clock-stage state-overload';
+        dom.clockRing.style.strokeDashoffset = 0;
+      }
+    }
+
+    function completeQuestion(statusOverride = null) {
+      soundEngine.playClick();
+
+      const timeSpent = state.currentQuestionSeconds;
+      let status = 'on-time';
+
+      if (statusOverride) {
+        status = statusOverride;
+      } else if (timeSpent > state.targetSeconds) {
+        status = 'overload';
+      }
+
+      state.questionsLog.push({
+        qIndex: state.currentQuestionIndex,
+        targetSeconds: state.targetSeconds,
+        timeSpent: timeSpent,
+        status: status,
+        result: 'pending'
+      });
+
+      updateLiveSummary();
+
+      if (state.totalQuestions > 0 && state.currentQuestionIndex >= state.totalQuestions) {
+        finishExam();
+      } else {
+        startQuestion(state.currentQuestionIndex + 1);
+      }
+    }
+
+    function skipQuestion() {
+      completeQuestion('skipped');
+    }
+
+    function finishExam() {
+      state.isRunning = false;
+      if (state.intervalId) clearInterval(state.intervalId);
+
+      soundEngine.playTimesUp();
+
+      const sessionData = {
+        id: 'sess_' + Date.now(),
+        date: new Date().toLocaleString(),
+        format: state.format,
+        policy: state.policy,
+        targetSeconds: state.targetSeconds,
+        totalQuestions: state.questionsLog.length,
+        totalElapsedSeconds: state.totalElapsedSeconds,
+        log: [...state.questionsLog]
+      };
+
+      state.history.unshift(sessionData);
+      try {
+        localStorage.setItem('chronoexam_history', JSON.stringify(state.history.slice(0, 30)));
+      } catch(e) {}
+
+      renderAnalytics(sessionData);
+      switchView('analytics');
+    }
+
+    function togglePause() {
+      state.isPaused = !state.isPaused;
+      updatePauseUI();
+    }
+
+    function updatePauseUI() {
+      const t = I18N[currentLang];
+      if (state.isPaused) {
+        dom.pauseIcon.style.display = 'none';
+        dom.playIcon.style.display = 'block';
+        dom.pauseBtnText.textContent = t.resumeBtn || 'Resume';
+        dom.clockClickArea.style.opacity = '0.5';
+      } else {
+        dom.pauseIcon.style.display = 'block';
+        dom.playIcon.style.display = 'none';
+        dom.pauseBtnText.textContent = t.pauseBtn || 'Pause';
+        dom.clockClickArea.style.opacity = '1';
+      }
+    }
+
+    function renderNavChips() {
+      dom.navChipsContainer.innerHTML = '';
+      const total = state.totalQuestions > 0 ? state.totalQuestions : 25;
+
+      for (let i = 1; i <= total; i++) {
+        const chip = document.createElement('div');
+        chip.className = 'q-nav-chip';
+        chip.id = `navChip_${i}`;
+        chip.innerHTML = `<span>Q${i}</span><span style="font-size:0.7rem; color:var(--text-muted);">&bull;</span>`;
+        dom.navChipsContainer.appendChild(chip);
+      }
+    }
+
+    function updateNavChips() {
+      const chips = document.querySelectorAll('.q-nav-chip');
+      chips.forEach((chip, idx) => {
+        const qNum = idx + 1;
+        const logged = state.questionsLog.find(q => q.qIndex === qNum);
+
+        if (qNum === state.currentQuestionIndex) {
+          chip.className = 'q-nav-chip current';
+          chip.innerHTML = `<span>Q${qNum}</span><span style="font-size:0.7rem; color:#818cf8;">Active</span>`;
+        } else if (logged) {
+          if (logged.status === 'on-time') {
+            chip.className = 'q-nav-chip on-time';
+            chip.innerHTML = `<span>Q${qNum}</span><span>${logged.timeSpent}s</span>`;
+          } else if (logged.status === 'overload') {
+            chip.className = 'q-nav-chip overload';
+            chip.innerHTML = `<span>Q${qNum}</span><span>+${logged.timeSpent - logged.targetSeconds}s</span>`;
+          } else if (logged.status === 'skipped') {
+            chip.className = 'q-nav-chip skipped';
+            chip.innerHTML = `<span>Q${qNum}</span><span>Skip</span>`;
+          }
+        } else {
+          chip.className = 'q-nav-chip';
+          chip.innerHTML = `<span>Q${qNum}</span><span style="font-size:0.7rem; color:var(--text-muted);">&bull;</span>`;
+        }
+      });
+    }
+
+    function updateLiveSummary() {
+      const totalDone = state.questionsLog.length;
+      const totalSecs = state.questionsLog.reduce((acc, q) => acc + q.timeSpent, 0);
+      const avg = totalDone > 0 ? Math.round(totalSecs / totalDone) : 0;
+      const onTimeCount = state.questionsLog.filter(q => q.status === 'on-time').length;
+      
+      dom.liveSummaryText.textContent = `${totalDone} Completed • ${onTimeCount} On-Time • Avg: ${avg}s`;
+    }
+
+    // CLOCK CLICK TO ADVANCE!
+    dom.clockClickArea.addEventListener('click', () => {
+      if (!state.isRunning || state.isPaused) return;
+      completeQuestion();
+    });
+
+    dom.nextQuestionBtn.addEventListener('click', () => {
+      if (!state.isRunning || state.isPaused) return;
+      completeQuestion();
+    });
+
+    dom.skipQuestionBtn.addEventListener('click', () => {
+      if (!state.isRunning || state.isPaused) return;
+      skipQuestion();
+    });
+
+    dom.pauseResumeBtn.addEventListener('click', () => {
+      if (!state.isRunning) return;
+      togglePause();
+    });
+
+    dom.endExamBtn.addEventListener('click', () => {
+      if (!state.isRunning) return;
+      const msg = currentLang === 'bn' 
+        ? 'আপনি কি পরীক্ষা শেষ করে সম্পূর্ণ অ্যানালাইসিস দেখতে চান?' 
+        : 'Are you sure you want to finish and generate the full performance analysis?';
+      if (confirm(msg)) {
+        finishExam();
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (!views.exam.classList.contains('active')) return;
+      if (e.code === 'Space') {
+        e.preventDefault();
+        if (state.isRunning && !state.isPaused) completeQuestion();
+      } else if (e.key === 'p' || e.key === 'P') {
+        if (state.isRunning) togglePause();
+      } else if (e.key === 's' || e.key === 'S') {
+        if (state.isRunning && !state.isPaused) skipQuestion();
+      }
+    });
+
+    /* =========================================================================
+       POST-EXAM COMPREHENSIVE ANALYTICS RENDERER
+       ========================================================================= */
+    function renderAnalytics(session) {
+      dom.analyticsSessionDate.textContent = currentLang === 'bn'
+        ? `সেশন সমাপ্ত: ${session.date} • ধরন: ${session.format} (লক্ষ্যমাত্রা: ${session.targetSeconds} সেকেন্ড)`
+        : `Session completed on ${session.date} • Format: ${session.format} (${session.targetSeconds}s target)`;
+
+      const logs = session.log;
+      const totalAttempted = logs.length;
+      const onTimeItems = logs.filter(q => q.status === 'on-time');
+      const overloadItems = logs.filter(q => q.status === 'overload');
+      const skippedItems = logs.filter(q => q.status === 'skipped');
+
+      const onTimeRate = totalAttempted > 0 ? Math.round((onTimeItems.length / totalAttempted) * 100) : 0;
+      const totalSecs = logs.reduce((a, b) => a + b.timeSpent, 0);
+      const avgSecs = totalAttempted > 0 ? Math.round(totalSecs / totalAttempted) : 0;
+
+      // Metric 1: Total Done
+      dom.metricTotalDone.textContent = totalAttempted;
+      if (session.totalQuestions > 0) {
+        dom.metricCompletionRate.textContent = `${totalAttempted} of ${session.totalQuestions} target (${Math.round((totalAttempted/session.totalQuestions)*100)}%)`;
+      } else {
+        dom.metricCompletionRate.textContent = `Open-ended practice`;
+      }
+
+      // Metric 2: On-Time Accuracy
+      dom.metricOnTimeRate.textContent = `${onTimeRate}%`;
+      dom.metricOnTimeDetail.textContent = `${onTimeItems.length} On-Time • ${overloadItems.length} Overload • ${skippedItems.length} Skipped`;
+
+      // Metric 3: Average Time
+      dom.metricAvgTime.textContent = formatTime(avgSecs);
+      dom.metricTargetCompare.textContent = `Target: ${formatTime(session.targetSeconds)} (${avgSecs <= session.targetSeconds ? 'Within target' : `+${avgSecs - session.targetSeconds}s over target`})`;
+
+      // Metric 4: Extremes
+      let fastest = null;
+      let slowest = null;
+      logs.forEach(q => {
+        if (q.status !== 'skipped') {
+          if (!fastest || q.timeSpent < fastest.timeSpent) fastest = q;
+          if (!slowest || q.timeSpent > slowest.timeSpent) slowest = q;
+        }
+      });
+
+      if (fastest && slowest) {
+        dom.metricExtremes.textContent = `⚡ ${fastest.timeSpent}s / 🐢 ${slowest.timeSpent}s`;
+        dom.metricExtremesDetail.textContent = `Fastest: Q${fastest.qIndex} • Slowest: Q${slowest.qIndex}`;
+      } else {
+        dom.metricExtremes.textContent = 'N/A';
+        dom.metricExtremesDetail.textContent = 'No answered questions';
+      }
+
+      // Overtime penalty total
+      const totalOvertime = logs.reduce((acc, q) => {
+        const extra = q.timeSpent - q.targetSeconds;
+        return extra > 0 ? acc + extra : acc;
+      }, 0);
+      dom.totalOvertimePenalty.textContent = `+${totalOvertime}s`;
+
+      updateScoreStats(logs);
+      renderPacingChart(session);
+      renderBreakdownTable(session);
+    }
+
+    function updateScoreStats(logs) {
+      const correctCount = logs.filter(q => q.result === 'correct').length;
+      const wrongCount = logs.filter(q => q.result === 'wrong').length;
+      const markedTotal = correctCount + wrongCount;
+
+      // Calculate marks with standard Bangladesh negative marking (1 mark per correct, -0.25 per wrong)
+      const calculatedScore = (correctCount * 1.0) - (wrongCount * 0.25);
+      dom.scoreCalculated.textContent = `${calculatedScore.toFixed(2)} / ${logs.length}`;
+
+      const accuracy = markedTotal > 0 ? Math.round((correctCount / markedTotal) * 100) : 0;
+      dom.accuracyPercent.textContent = markedTotal > 0 ? `${accuracy}%` : '--';
+
+      const correctQuestions = logs.filter(q => q.result === 'correct');
+      if (correctQuestions.length > 0) {
+        const avg = Math.round(correctQuestions.reduce((a, b) => a + b.timeSpent, 0) / correctQuestions.length);
+        dom.avgCorrectTime.textContent = `${avg}s`;
+      } else {
+        dom.avgCorrectTime.textContent = '--';
+      }
+    }
+
+    function renderPacingChart(session) {
+      dom.chartBarsContainer.innerHTML = '';
+      const logs = session.log;
+      if (logs.length === 0) return;
+
+      const target = session.targetSeconds;
+      const maxTimeSpent = Math.max(...logs.map(q => q.timeSpent), target * 1.5);
+
+      const targetPercent = (target / maxTimeSpent) * 100;
+      const targetLine = document.createElement('div');
+      targetLine.className = 'target-time-line';
+      targetLine.style.bottom = `${targetPercent}%`;
+      targetLine.innerHTML = `<span class="target-line-tag">Target (${target}s)</span>`;
+      dom.chartBarsContainer.appendChild(targetLine);
+
+      logs.forEach(q => {
+        const col = document.createElement('div');
+        col.className = 'chart-bar-col';
+
+        const heightPercent = Math.min(100, Math.max(6, (q.timeSpent / maxTimeSpent) * 100));
+        let barColor = 'var(--success)';
+
+        if (q.status === 'skipped') {
+          barColor = '#6b7280';
+        } else if (q.timeSpent > target) {
+          barColor = 'var(--danger)';
+        } else if (q.timeSpent >= target * 0.8) {
+          barColor = 'var(--warning)';
+        }
+
+        const pill = document.createElement('div');
+        pill.className = 'bar-pill';
+        pill.style.height = `${heightPercent}%`;
+        pill.style.background = barColor;
+        pill.setAttribute('data-tooltip', `Q${q.qIndex}: ${q.timeSpent}s (${q.status})`);
+
+        const label = document.createElement('div');
+        label.className = 'bar-label';
+        label.textContent = `Q${q.qIndex}`;
+
+        col.appendChild(pill);
+        col.appendChild(label);
+        dom.chartBarsContainer.appendChild(col);
+      });
+    }
+
+    function renderBreakdownTable(session) {
+      dom.analyticsTableBody.innerHTML = '';
+      const logs = session.log;
+
+      logs.forEach(q => {
+        const tr = document.createElement('tr');
+        const diff = q.timeSpent - q.targetSeconds;
+        let diffText = '';
+        let diffColor = 'var(--text-secondary)';
+
+        if (q.status === 'skipped') {
+          diffText = 'Skipped';
+        } else if (diff > 0) {
+          diffText = `+${diff}s (Overtime)`;
+          diffColor = 'var(--danger)';
+        } else if (diff < 0) {
+          diffText = `${diff}s (Saved)`;
+          diffColor = 'var(--success)';
+        } else {
+          diffText = 'Exact 0s';
+        }
+
+        let statusBadge = '';
+        if (q.status === 'on-time') {
+          statusBadge = '<span class="tag-status" style="background:rgba(16,185,129,0.15); color:#10b981;">✔️ On-Time</span>';
+        } else if (q.status === 'overload') {
+          statusBadge = '<span class="tag-status" style="background:rgba(239,68,68,0.15); color:#ef4444;">⚠️ Overload</span>';
+        } else {
+          statusBadge = '<span class="tag-status" style="background:rgba(107,114,128,0.2); color:#9ca3af;">⛔ Auto-Skip</span>';
+        }
+
+        tr.innerHTML = `
+          <td style="font-weight:700; font-family:var(--font-mono); color:var(--text-primary);">Q${q.qIndex}</td>
+          <td style="font-family:var(--font-mono);">${q.targetSeconds}s</td>
+          <td style="font-weight:700; font-family:var(--font-mono); color:var(--text-primary);">${q.timeSpent}s</td>
+          <td style="font-family:var(--font-mono); color:${diffColor}; font-weight:600;">${diffText}</td>
+          <td>${statusBadge}</td>
+          <td>
+            <div class="mark-btn-group">
+              <button class="mark-btn ${q.result === 'correct' ? 'active-correct' : ''}" onclick="toggleMark(${q.qIndex}, 'correct')">✔️ Correct</button>
+              <button class="mark-btn ${q.result === 'wrong' ? 'active-wrong' : ''}" onclick="toggleMark(${q.qIndex}, 'wrong')">❌ Wrong</button>
+            </div>
+          </td>
+        `;
+        dom.analyticsTableBody.appendChild(tr);
+      });
+    }
+
+    window.toggleMark = function(qIndex, markType) {
+      const q = state.questionsLog.find(item => item.qIndex === qIndex);
+      if (!q) return;
+      if (q.result === markType) {
+        q.result = 'pending';
+      } else {
+        q.result = markType;
+      }
+      updateScoreStats(state.questionsLog);
+      renderBreakdownTable({ log: state.questionsLog, targetSeconds: state.targetSeconds });
+    };
+
+    dom.newSessionBtn.addEventListener('click', () => {
+      switchView('setup');
+    });
+
+    dom.brandBtn.addEventListener('click', () => {
+      if (state.isRunning) {
+        const msg = currentLang === 'bn' 
+          ? 'একটি পরীক্ষা চলছে। আপনি কি সেটআপে ফিরে যেতে চান?' 
+          : 'An exam session is currently active. Do you want to return to the setup screen?';
+        if (confirm(msg)) {
+          state.isRunning = false;
+          clearInterval(state.intervalId);
+          switchView('setup');
+        }
+      } else {
+        switchView('setup');
+      }
+    });
+
+    dom.printReportBtn.addEventListener('click', () => {
+      window.print();
+    });
+
+    dom.exportCsvBtn.addEventListener('click', () => {
+      if (state.questionsLog.length === 0) return;
+      let csv = 'Question,Target_Seconds,Actual_Seconds,Diff_Seconds,Status,Result\n';
+      state.questionsLog.forEach(q => {
+        csv += `${q.qIndex},${q.targetSeconds},${q.timeSpent},${q.timeSpent - q.targetSeconds},${q.status},${q.result}\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ChronoExam_Report_${Date.now()}.csv`;
+      a.click();
+    });
+
+    dom.historyBtn.addEventListener('click', () => {
+      renderHistoryModal();
+      dom.historyModal.classList.add('active');
+    });
+
+    dom.closeHistoryModal.addEventListener('click', () => {
+      dom.historyModal.classList.remove('active');
+    });
+
+    dom.historyModal.addEventListener('click', (e) => {
+      if (e.target === dom.historyModal) dom.historyModal.classList.remove('active');
+    });
+
+    function renderHistoryModal() {
+      dom.historyListContainer.innerHTML = '';
+      if (state.history.length === 0) {
+        dom.historyListContainer.innerHTML = `<div style="color:var(--text-muted); text-align:center; padding:2rem;">${currentLang === 'bn' ? 'কোনো পূর্ববর্তী সেশন সংরক্ষিত নেই।' : 'No past sessions saved yet.'}</div>`;
+        return;
+      }
+
+      state.history.forEach((sess) => {
+        const item = document.createElement('div');
+        item.style.cssText = 'background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:1rem; cursor:pointer; display:flex; justify-content:space-between; align-items:center;';
+        
+        const onTimeCount = sess.log.filter(q => q.status === 'on-time').length;
+        const total = sess.log.length;
+        const rate = total > 0 ? Math.round((onTimeCount / total) * 100) : 0;
+
+        item.innerHTML = `
+          <div>
+            <div style="font-weight:700; font-size:0.95rem; margin-bottom:0.2rem;">${sess.format} Session (${total} Qs)</div>
+            <div style="font-size:0.75rem; color:var(--text-muted);">${sess.date}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-family:var(--font-mono); font-weight:800; color:${rate >= 80 ? 'var(--success)' : 'var(--warning)'}; font-size:1.1rem;">${rate}%</div>
+            <div style="font-size:0.7rem; color:var(--text-secondary);">On-Time Rate</div>
+          </div>
+        `;
+
+        item.addEventListener('click', () => {
+          dom.historyModal.classList.remove('active');
+          renderAnalytics(sess);
+          switchView('analytics');
+        });
+
+        dom.historyListContainer.appendChild(item);
+      });
+    }
+
+    renderPresets();
+  </script>
+</body>
+</html>
+Displaying ChronoExam_Pro_Max_Webapp.html.
